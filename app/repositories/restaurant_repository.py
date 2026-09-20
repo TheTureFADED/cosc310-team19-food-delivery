@@ -2,7 +2,7 @@ import json
 from app.schemas.restaurant import Restaurant
 from pathlib import Path
 
-DATA = Path("app/data/restaurants.json")
+DATA = Path("data/restaurants.json")
 
 
 def restaurant_repo_read_json() -> list[dict]:
