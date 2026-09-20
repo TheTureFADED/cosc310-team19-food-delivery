@@ -31,6 +31,27 @@
     "cuisine_type": "Indian",
     "opening_hours": "Daily: 12:00 PM - 11:00 PM",
     "rating": 4.8
+  },
+  {
+    "id": 4,
+    "name": "st12ring",
+    "address": "stri12ng",
+    "phone_number": "s12tring",
+    "email": "str12ing",
+    "website": "s12tring",
+    "cuisine_type": "st12ring",
+    "opening_hours": "str12ing",
+    "rating": 0.0
+  },
+  {
+    "id": 5,
+    "name": "str1212ing",
+    "address": "string",
+    "phone_number": "string",
+    "email": "string",
+    "website": "string",
+    "cuisine_type": "string",
+    "opening_hours": "string",
+    "rating": 0.0
   }
 ]
-
