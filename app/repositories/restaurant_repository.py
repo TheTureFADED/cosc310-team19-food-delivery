@@ -1,18 +1,20 @@
 import json
 from app.schemas.restaurant import Restaurant
+from pathlib import Path
+
+DATA = Path("app/data/restaurants.json")
 
 
-def get_restaurants_json() -> list[dict]:
-    with open("data/restaurants.json", "r") as file:
-        data: list[dict] = json.load(file)
-    return data
+def restaurant_repo_read_json() -> list[dict]:
+    with DATA.open() as file:
+        return json.load(file)
 
-def add_restaurant_to_json(restaurant: Restaurant) -> Restaurant:
-    restaurants = get_restaurants_json()
+def restaurant_repo_add_restaurant_to_json(restaurant: Restaurant) -> Restaurant:
+    restaurants: list[dict] = restaurant_repo_read_json()
 
     restaurants.append(restaurant)
 
-    with open("data/restaurants.json", "w") as file:
+    with DATA.open("w") as file:
         json.dump(restaurants, file, indent = 2)
 
     return restaurant

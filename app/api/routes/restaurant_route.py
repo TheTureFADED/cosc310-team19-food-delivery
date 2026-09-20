@@ -1,35 +1,39 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, FastAPI, HTTPException, status
+from app.services import restaurant_service
 from app.services.restaurant_service import (
-    get_all_restaurants, 
-    get_restaurants_by_cuisine,
-    get_restaurant_by_id,
-    create_restaurant,
+    restaurant_service_add,
+    restaurant_service_get_all_restaurants,
+    restaurant_service_get_by_cuisine,
+    restaurant_service_get_by_id,
     DuplicateRestaurantError
 )
+
 from app.schemas.restaurant import RestaurantCreate
+
+
 
 router = APIRouter(prefix="/restaurants")
 
-
 @router.get("/restaurant-list")
 def get_restaurants_list() -> list[dict]:
-    data = get_all_restaurants()
-    return data
+    return restaurant_service_get_all_restaurants();
 
 @router.get("/{restaurant_id}") 
 def get(restaurant_id: int) -> dict:
-    return get_restaurant_by_id(restaurant_id)
+    return restaurant_service_get_by_id(restaurant_id)
 
 @router.get("")
 def list_all(cuisine: str | None = None) -> list[dict]:
     if cuisine is None:
-        return get_all_restaurants()
-    return get_restaurants_by_cuisine(cuisine)
+        return restaurant_service_get_all_restaurants()
+    return restaurant_service_get_by_cuisine(cuisine)
 
-@router.post("", status_code=status.HTTP_201_CREATED)
-def create(new_restaurant: RestaurantCreate) -> dict:
+@router.post(
+        "/restaurant-list", 
+        status_code=status.HTTP_201_CREATED)
+def add_restaurant(new_restaurant: RestaurantCreate) -> dict:
     try:
-        return create_restaurant(new_restaurant)
+        return restaurant_service_add(new_restaurant)
 
     except DuplicateRestaurantError as e:
         raise HTTPException(
