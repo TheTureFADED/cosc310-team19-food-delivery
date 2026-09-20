@@ -1,5 +1,4 @@
 from fastapi import FastAPI, HTTPException
-
 from app.api.routes import restaurant_route
 
 app = FastAPI(title="We will go through this sesemter like every other sesemter", version="0.0.0.0.1")
