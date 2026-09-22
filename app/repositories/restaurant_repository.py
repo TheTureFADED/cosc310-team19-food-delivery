@@ -1,20 +1,20 @@
 import json
-from app.schemas.restaurant import Restaurant
 from pathlib import Path
+class RestaurantRepository:
+    def __init__(self, data_path: str = "data/restaurants.json"):
+        self.data_path = Path(data_path)
 
-DATA = Path("data/restaurants.json")
+    def _load(self) -> list[dict]:
+        if not self.data_path.exists():
+            return []
+        with open(self.data_path, "r", encoding="utf-8") as f:
+            return json.load(f)
 
+    def get_all(self) -> list[dict]:
+        return self._load()
 
-def restaurant_repo_read_json() -> list[dict]:
-    with DATA.open() as file:
-        return json.load(file)
-
-def restaurant_repo_add_restaurant_to_json(restaurant: Restaurant) -> Restaurant:
-    restaurants: list[dict] = restaurant_repo_read_json()
-
-    restaurants.append(restaurant)
-
-    with DATA.open("w") as file:
-        json.dump(restaurants, file, indent = 2)
-
-    return restaurant
+    def get_by_id(self, restaurant_id: int) -> dict | None:
+        for restaurant in self._load():
+            if restaurant["id"] == restaurant_id:
+                return restaurant
+        return None
