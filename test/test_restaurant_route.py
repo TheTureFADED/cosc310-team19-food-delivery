@@ -34,7 +34,7 @@ def test_get_restaurants_by_id():
 
 
 
-def test_get_by_cuisine():
+def test_get_restaurant_by_cuisine():
     response = client.get("/restaurants?cuisine=st12ring")
     assert response.status_code == 200
     response = response.json()
