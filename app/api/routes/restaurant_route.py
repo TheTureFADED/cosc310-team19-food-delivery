@@ -5,6 +5,7 @@ from app.services.restaurant_service import (
     restaurant_service_list,
     restaurant_service_get_by_cuisine,
     restaurant_service_get_by_id,
+    restaurant_service_delete,
     DuplicateRestaurantError,
     RestaurantNotFoundError
 )
@@ -16,7 +17,7 @@ all_restaurant = restaurant_service_list()
 
 @router.get(
         "",
-        status_code = status.HTTP_200)
+        status_code = status.HTTP_200_OK)
 def restaurant_route_get_list() -> list[dict]:
     return all_restaurant;
 
@@ -24,7 +25,7 @@ def restaurant_route_get_list() -> list[dict]:
         "/{restaurant_id}",
         response_model = RestaurantCreate,  
         # filters anything not declared in the model of RestaurantCreate
-        status_code = status.HTTP_200) 
+        status_code = status.HTTP_200_OK) 
 def restaurant_route_get_by_id(restaurant_id: int) -> dict:
     try: 
         return restaurant_service_get_by_id(restaurant_id)
@@ -38,7 +39,7 @@ def restaurant_route_get_by_id(restaurant_id: int) -> dict:
 @router.get(
         "/filtered-by-cuisine-type",
         response_model = RestaurantRead,
-        status_code = status.HTTP_200)
+        status_code = status.HTTP_200_OK)
 def restaurant_route_get_by_cuisine(cuisine: str | None = None) -> list[dict]:
     try:
         if cuisine is None:
