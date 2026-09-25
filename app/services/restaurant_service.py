@@ -5,7 +5,7 @@ from app.repositories.restaurant_repository import (
 from app.schemas.restaurant import Restaurant, RestaurantCreate
 from app.errors import DuplicateRestaurantError, RestaurantNotFoundError
 
-def restaurant_service_add(new_restaurant: RestaurantCreate) -> Restaurant:
+def restaurant_service_create(new_restaurant: RestaurantCreate) -> Restaurant:
     restaurants = restaurant_repo_read_json()
     for restaurant in restaurants:
         if restaurant["name"] == new_restaurant.name:
@@ -22,7 +22,7 @@ def restaurant_service_add(new_restaurant: RestaurantCreate) -> Restaurant:
     return restaurant_repo_add_restaurant_to_json(restaurant)
 
 
-def restaurant_service_get_all_restaurants() -> list[Restaurant]:
+def restaurant_service_list() -> list[Restaurant]:
     restaurants = restaurant_repo_read_json()
     return [Restaurant(**restaurant) for restaurant in restaurants]
 
@@ -45,3 +45,5 @@ def restaurant_service_get_by_cuisine(cuisine: str) -> list[Restaurant]:
         for restaurant in restaurants
         if restaurant["cuisine_type"].lower() == cuisine.lower()
     ]
+
+def restaurant_service_delete(restaurant_id: int) -> None:
