@@ -52,7 +52,6 @@ def restaurant_service_get_by_cuisine(cuisine: str) -> list[RestaurantRead]:
     return matched
 
 def restaurant_service_delete(restaurant_id: int) -> None:
-    restaurants = restaurant_repo.restaurant_repo_list()
     deleted = restaurant_repo.restaurant_repo_delete_by_id(restaurant_id)
 
     if not deleted:

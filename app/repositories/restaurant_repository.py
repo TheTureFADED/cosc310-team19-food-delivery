@@ -1,7 +1,6 @@
 import json
 import os
 from pathlib import Path
-from app.schemas.restaurant import RestaurantCreate, RestaurantRead, RestaurantUpdate
 class RestaurantRepository:
     def __init__(self, data_path: str | None = None):
         self.data_path = data_path
@@ -32,7 +31,7 @@ class RestaurantRepository:
     def restaurant_repo_list(self) -> list[dict]:
         return self._load()
 
-    def restaurant_repo_get_by_id(self, restaurant_id: int) -> RestaurantRead | None:
+    def restaurant_repo_get_by_id(self, restaurant_id: int) -> dict | None:
         for restaurant in self._load():
             if restaurant["id"] == restaurant_id:
                 return restaurant

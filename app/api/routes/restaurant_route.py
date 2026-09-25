@@ -1,21 +1,20 @@
-from fastapi import APIRouter, FastAPI, HTTPException, status
-from app.services import restaurant_service
+from fastapi import APIRouter, HTTPException, status
 from app.services.restaurant_service import (
     restaurant_service_create,
     restaurant_service_list,
     restaurant_service_get_by_cuisine,
     restaurant_service_get_by_id,
-    restaurant_service_delete,
-    DuplicateRestaurantError,
-    RestaurantNotFoundError
+    restaurant_service_delete
 )
+from app.errors import RestaurantNotFoundError, DuplicateRestaurantError
 
-from app.schemas.restaurant import RestaurantCreate, RestaurantRead, RestaurantUpdate
+from app.schemas.restaurant import RestaurantCreate, RestaurantRead
 
 router = APIRouter(prefix="/restaurants")
 
 @router.get(
         "",
+        response_model=list[RestaurantRead],
         status_code = status.HTTP_200_OK)
 def restaurant_route_get_list() -> list[RestaurantRead]:
     return restaurant_service_list()
@@ -39,7 +38,7 @@ def restaurant_route_create(new_restaurant: RestaurantCreate) -> RestaurantRead:
         "/filtered-by-{cuisine}-type",
         response_model = list[RestaurantRead],
         status_code = status.HTTP_200_OK)
-def restaurant_route_get_by_cuisine(cuisine: str | None = None) -> list[dict]:
+def restaurant_route_get_by_cuisine(cuisine: str | None = None) -> list[RestaurantRead]:
     try:
         if cuisine is None:
             return restaurant_service_list()

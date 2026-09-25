@@ -7,16 +7,13 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 
-DATA = Path("data")
+REAL_DATA = Path(__file__).resolve().parents[1] / "data"
 
-def restaurant_repo_list() -> list[dict]:
-    with DATA.open() as file:
-        return json.load(file)
-
-@pytest.fixture(autouse = True)
+@pytest.fixture(autouse=True)
 def isolated_data(tmp_path, monkeypatch):
-    for name in ("restaurants.json",):
-        shutil.copy(DATA / name, tmp_path / name)
+    for name in ("restaurants.json", "menu_items.json"):
+        shutil.copy(REAL_DATA / name, tmp_path / name)
+
     monkeypatch.setenv("COSC310_DATA_DIR", str(tmp_path))
 
 @pytest.fixture
