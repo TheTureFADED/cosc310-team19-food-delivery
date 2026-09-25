@@ -90,7 +90,7 @@ def test_add_new_restaurants_conflict():
     )
     
     response = client.post(
-        "/restaurants/restaurant-list", 
+        "/restaurants", 
         json =  {
             "id":6,
             "name":"testRestaurant",

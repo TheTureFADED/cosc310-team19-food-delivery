@@ -25,14 +25,15 @@
   },
   {
     "id": 3,
-    "name": "testRestaurant",
-    "address": "testAddress",
-    "phone_number": "testPhone",
-    "email": "testEmail",
-    "website": "testWebsite",
-    "cuisine_type": "testCuisine",
-    "opening_hours": "testHours",
-    "rating": 5.0,
+    "name": "Saffron Street",
+    "address": "88 Market Road, Surrey, BC",
+    "phone_number": "604-555-0103",
+    "email": "info@saffronstreet.ca",
+    "website": "https://saffronstreet.ca",
+    "cuisine_type": "Indian",
+    "opening_hours": "Daily: 12:00 PM - 11:00 PM",
+    "rating": 4.8,
     "availability": true
   }
+
 ]
