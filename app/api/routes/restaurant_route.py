@@ -13,20 +13,50 @@ from app.services.restaurant_service import (
 from app.schemas.restaurant import RestaurantCreate, RestaurantRead, RestaurantUpdate
 
 router = APIRouter(prefix="/restaurants")
-all_restaurant = restaurant_service_list()
 
 @router.get(
         "",
         status_code = status.HTTP_200_OK)
-def restaurant_route_get_list() -> list[dict]:
-    return all_restaurant;
+def restaurant_route_get_list() -> list[RestaurantRead]:
+    return restaurant_service_list()
+
+
+@router.post( 
+        "", 
+        status_code=status.HTTP_201_CREATED)
+def restaurant_route_create(new_restaurant: RestaurantCreate) -> RestaurantRead:
+    try:
+        return restaurant_service_create(new_restaurant)
+
+    except DuplicateRestaurantError as e:
+        raise HTTPException(
+            status_code = status.HTTP_409_CONFLICT,
+            detail = str(e)
+        )
+
+
+@router.get(
+        "/filtered-by-{cuisine}-type",
+        response_model = list[RestaurantRead],
+        status_code = status.HTTP_200_OK)
+def restaurant_route_get_by_cuisine(cuisine: str | None = None) -> list[dict]:
+    try:
+        if cuisine is None:
+            return restaurant_service_list()
+        return restaurant_service_get_by_cuisine(cuisine)
+    except RestaurantNotFoundError as e:
+        raise HTTPException(
+            status_code = status.HTTP_404_NOT_FOUND,
+            detail = str(e)
+        )
+#order matters here, has to be above {restaurant_id}
 
 @router.get(
         "/{restaurant_id}",
-        response_model = RestaurantCreate,  
+        response_model = RestaurantRead,  
         # filters anything not declared in the model of RestaurantCreate
         status_code = status.HTTP_200_OK) 
-def restaurant_route_get_by_id(restaurant_id: int) -> dict:
+def restaurant_route_get_by_id(restaurant_id: int) -> RestaurantRead:
     try: 
         return restaurant_service_get_by_id(restaurant_id)
 
@@ -36,33 +66,7 @@ def restaurant_route_get_by_id(restaurant_id: int) -> dict:
             detail = str(e)
         )
 
-@router.get(
-        "/filtered-by-cuisine-type",
-        response_model = RestaurantRead,
-        status_code = status.HTTP_200_OK)
-def restaurant_route_get_by_cuisine(cuisine: str | None = None) -> list[dict]:
-    try:
-        if cuisine is None:
-            return all_restaurant
-        return restaurant_service_get_by_cuisine(cuisine)
-    except RestaurantNotFoundError as e:
-        raise HTTPException(
-            status_code = status.HTTP_404_NOT_FOUND,
-            detail = str(e)
-        )
 
-@router.post( 
-        "", 
-        status_code=status.HTTP_201_CREATED)
-def restaurant_route_create(new_restaurant: RestaurantCreate) -> dict:
-    try:
-        return restaurant_service_create(new_restaurant)
-
-    except DuplicateRestaurantError as e:
-        raise HTTPException(
-            status_code = status.HTTP_409_CONFLICT,
-            detail = str(e)
-        )
 
 @router.delete(
         "/{restaurant_id}",

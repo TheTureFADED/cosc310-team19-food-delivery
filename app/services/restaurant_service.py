@@ -6,9 +6,10 @@ from app.schemas.restaurant import RestaurantCreate, RestaurantUpdate, Restauran
 from app.errors import DuplicateRestaurantError, RestaurantNotFoundError
 
 restaurant_repo = RestaurantRepository()
-restaurants = restaurant_repo.restaurant_repo_list()
 
 def restaurant_service_create(new_restaurant: RestaurantCreate) -> RestaurantRead:
+
+    restaurants = restaurant_repo.restaurant_repo_list()
     for restaurant in restaurants:
         if restaurant["name"] == new_restaurant.name:
             raise DuplicateRestaurantError(
@@ -23,6 +24,7 @@ def restaurant_service_create(new_restaurant: RestaurantCreate) -> RestaurantRea
 
 
 def restaurant_service_list() -> list[RestaurantRead]:
+    restaurants = restaurant_repo.restaurant_repo_list()
     return [RestaurantRead(**restaurant) for restaurant in restaurants]
 
 def restaurant_service_get_by_id(restaurant_id: int) -> RestaurantRead:
@@ -37,6 +39,7 @@ def restaurant_service_get_by_id(restaurant_id: int) -> RestaurantRead:
     return RestaurantRead(**restaurant)
 
 def restaurant_service_get_by_cuisine(cuisine: str) -> list[RestaurantRead]:
+    restaurants = restaurant_repo.restaurant_repo_list()
     matched = [
         RestaurantRead(**restaurant)
         for restaurant in restaurants
@@ -49,6 +52,7 @@ def restaurant_service_get_by_cuisine(cuisine: str) -> list[RestaurantRead]:
     return matched
 
 def restaurant_service_delete(restaurant_id: int) -> None:
+    restaurants = restaurant_repo.restaurant_repo_list()
     deleted = restaurant_repo.restaurant_repo_delete_by_id(restaurant_id)
 
     if not deleted:
