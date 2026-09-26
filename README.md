@@ -89,3 +89,85 @@ The POST route returns HTTP `201` when a restaurant is added and HTTP `409` if t
 ## Location of representative data
 
 The restaurant request goes from the route to the service, then to the repository, which reads or updates the JSON file. To prevent any misuse or meddling with original data, the repository uses the relative path `data/restaurants.json`.
+
+# Testing and Repository Structure
+
+## How to Run Tests
+
+From the project root, create and activate a virtual environment, then
+install the required dependencies.
+
+### macOS / Linux
+
+``` bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pytest
+```
+
+### Windows
+
+``` bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+pytest
+```
+
+To run the tests with less output:
+
+``` bash
+pytest -q
+```
+
+The test suite is located in the `test/` directory. Tests use separate
+test data so that the application's committed data is not modified
+during testing.
+
+## Repository Structure
+
+``` text
+cosc310-team19-food-delivery/
+├── app/
+│   ├── main.py                      # FastAPI application entry point
+│   ├── errors.py                    # Application/domain errors
+│   │
+│   ├── api/
+│   │   └── routes/
+│   │       └── restaurant_route.py  # Restaurant HTTP/API endpoints
+│   │
+│   ├── schemas/
+│   │   └── restaurant.py            # Pydantic restaurant models
+│   │
+│   ├── services/
+│   │   └── restaurant_service.py    # Restaurant business logic
+│   │
+│   └── repositories/
+│       ├── restaurant_repository.py # Restaurant persistence operations
+│       └── json_store.py             # Shared JSON storage support
+│
+├── data/
+│   ├── restaurants.json             # Persistent restaurant data
+│   └── uml.md                       # Architecture/UML documentation
+│
+├── test/
+│   ├── conftest.py                  # Shared pytest fixtures/configuration
+│   ├── test_app.py                  # Application-level tests
+│   └── test_restaurant_route.py     # Restaurant API tests
+│
+├── scrum/
+│   └── team-agreement.md            # Team agreement
+│
+├── requirements.txt                 # Python dependencies
+├── .gitignore
+└── README.md
+```
+
+The backend follows the required layered structure:
+
+`Routes → Services → Repositories → JSON persistence`
+
+Routes handle HTTP/API communication, services contain business logic,
+and repositories handle persistence.
+
