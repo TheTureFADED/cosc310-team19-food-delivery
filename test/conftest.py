@@ -19,3 +19,4 @@ def isolated_data(tmp_path, monkeypatch):
 @pytest.fixture
 def client():
     return TestClient(app)
+
