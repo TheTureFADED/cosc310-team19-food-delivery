@@ -22,3 +22,7 @@ def menu_item_service_update():
 
 def menu_item_service_delete():
     pass
+
+
+def menu_item_service_get_by_restaurant():
+    pass
