@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+
 def test_get_restaurants_list(client):
     
     response = client.get("/restaurants")
@@ -90,6 +91,8 @@ def test_add_new_restaurants_conflict(client):
             "availability": True
         }
     )
+    
+    assert response.json() == {"detail": "A restaurant with the name testRestaurant already exists"}
     assert response.status_code == 409
 
 def test_delete_restaurant_not_found(client):
